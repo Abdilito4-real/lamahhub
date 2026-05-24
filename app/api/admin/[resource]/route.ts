@@ -92,6 +92,11 @@ export async function PATCH(
       return NextResponse.json({ error: 'Missing admin payload' }, { status: 400 })
     }
 
+    // Clean payload of metadata that might cause issues with Supabase update
+    if (payload.id) delete payload.id
+    if (payload.created_at) delete payload.created_at
+    if (payload.updated_at) delete payload.updated_at
+
     if (!id && resource !== 'site_settings') {
       return NextResponse.json({ error: 'Missing id for update' }, { status: 400 })
     }
