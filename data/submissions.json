@@ -1,0 +1,111 @@
+{
+  "submissions": [
+    {
+      "id": "1a50e989-b1a2-478d-ad03-42e15488030f",
+      "reference": "ey3ij5xzdf",
+      "type": "booking",
+      "itemId": "7-a-side-2026-05-19-06:00 PM",
+      "title": "Pitch Booking (7-a-side) - 2026-05-19 06:00 PM",
+      "name": "Psyberly Labs",
+      "email": "psyberlylabs@gmail.com",
+      "phone": "34576789678",
+      "amount": 25000,
+      "status": "success",
+      "qrText": "LAMAHHUB:ey3ij5xzdf",
+      "checkedIn": false,
+      "createdAt": "2026-05-19T20:10:55.968Z",
+      "updatedAt": "2026-05-19T20:10:55.968Z",
+      "payload": {
+        "id": 6164793825,
+        "domain": "test",
+        "status": "success",
+        "reference": "ey3ij5xzdf",
+        "receipt_number": null,
+        "amount": 2500000,
+        "message": null,
+        "gateway_response": "Successful",
+        "response_code": "00",
+        "paid_at": "2026-05-19T20:10:53.000Z",
+        "created_at": "2026-05-19T20:10:22.000Z",
+        "channel": "card",
+        "currency": "NGN",
+        "ip_address": "102.92.23.228",
+        "metadata": {
+          "name": "Psyberly Labs",
+          "phone": "34576789678",
+          "type": "booking",
+          "itemId": "7-a-side-2026-05-19-06:00 PM",
+          "title": "Pitch Booking (7-a-side) - 2026-05-19 06:00 PM",
+          "tickets": "1",
+          "teamName": "Psyberly Labs",
+          "notes": "Pitch booking for 7-a-side on 2026-05-19 at 06:00 PM",
+          "referrer": "http://localhost:3000/"
+        },
+        "log": {
+          "start_time": 1779221445,
+          "time_spent": 8,
+          "attempts": 1,
+          "errors": 0,
+          "success": true,
+          "mobile": false,
+          "input": [],
+          "history": [
+            {
+              "type": "action",
+              "message": "Attempted to pay with card",
+              "time": 7
+            },
+            {
+              "type": "success",
+              "message": "Successfully paid with card",
+              "time": 8
+            }
+          ]
+        },
+        "fees": 47500,
+        "fees_split": null,
+        "authorization": {
+          "authorization_code": "AUTH_jyjg7mh42c",
+          "bin": "408408",
+          "last4": "4081",
+          "exp_month": "12",
+          "exp_year": "2030",
+          "channel": "card",
+          "card_type": "visa ",
+          "bank": "TEST BANK",
+          "country_code": "NG",
+          "brand": "visa",
+          "reusable": true,
+          "signature": "SIG_eu3BLBVkn2djrJ1wZ1z0",
+          "account_name": null,
+          "receiver_bank_account_number": null,
+          "receiver_bank": null
+        },
+        "customer": {
+          "id": 366128268,
+          "first_name": null,
+          "last_name": null,
+          "email": "psyberlylabs@gmail.com",
+          "customer_code": "CUS_4xu2966uk6srtiu",
+          "phone": null,
+          "metadata": null,
+          "risk_action": "default",
+          "international_format_phone": null
+        },
+        "plan": null,
+        "split": {},
+        "order_id": null,
+        "paidAt": "2026-05-19T20:10:53.000Z",
+        "createdAt": "2026-05-19T20:10:22.000Z",
+        "requested_amount": 2500000,
+        "pos_transaction_data": null,
+        "source": null,
+        "fees_breakdown": null,
+        "connect": null,
+        "transaction_date": "2026-05-19T20:10:22.000Z",
+        "plan_object": {},
+        "subaccount": {}
+      }
+    }
+  ]
+}
