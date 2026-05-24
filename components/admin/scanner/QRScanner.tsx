@@ -68,6 +68,14 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
             onScan(code.data)
             setIsScanning(false)
             isScanningRef.current = false
+
+            // Explicitly stop the camera stream
+            if (videoRef.current && videoRef.current.srcObject) {
+              const stream = videoRef.current.srcObject as MediaStream
+              stream.getTracks().forEach(track => track.stop())
+              videoRef.current.srcObject = null
+            }
+
             return // Stop ticking after a successful scan
           }
         }
