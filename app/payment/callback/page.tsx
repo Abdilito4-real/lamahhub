@@ -90,7 +90,7 @@ export default function PaymentCallbackPage() {
           return
         }
 
-        await fetch('https://lamahhub.vercel.app/api/submissions', {
+        await fetch('/api/submissions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

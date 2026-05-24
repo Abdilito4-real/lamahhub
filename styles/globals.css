@@ -122,6 +122,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  button,
+  [role="button"],
+  a {
+    @apply cursor-pointer;
+  }
 }
 
 @layer utilities {
