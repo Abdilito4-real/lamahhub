@@ -9,8 +9,11 @@ import {
   CheckIcon,
   ClockIcon,
   SearchIcon,
-  FilterIcon
+  FilterIcon,
+  ExpandIcon
 } from '@/components/lamah/Icons'
+import { QRScanner } from './scanner/QRScanner'
+import { toast } from 'sonner'
 
 export function AdminDashboard() {
   const {
@@ -23,6 +26,8 @@ export function AdminDashboard() {
   const [submissions, setSubmissions] = useState<any[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterType, setFilterType] = useState('all')
+  const [showScanner, setShowScanner] = useState(false)
+  const [isProcessingScan, setIsProcessingScan] = useState(false)
 
   const loadSubmissions = async () => {
     try {
@@ -62,6 +67,33 @@ export function AdminDashboard() {
     return matchesSearch && matchesFilter
   })
 
+  const handleScan = async (reference: string) => {
+    if (isProcessingScan) return
+    setIsProcessingScan(true)
+
+    try {
+      const res = await fetch('/api/submissions/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference })
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        toast.success(`Check-in successful for ${data.submission.name}`)
+        loadSubmissions()
+        setShowScanner(false)
+      } else {
+        toast.error(data.error || 'Check-in failed')
+      }
+    } catch (err) {
+      toast.error('An error occurred during check-in')
+    } finally {
+      setIsProcessingScan(false)
+    }
+  }
+
   const stats = [
     { label: 'Paid Submissions', value: paidSubmissionsCount, icon: CheckIcon, color: 'text-green-400', bg: 'bg-green-400/10' },
     { label: 'Total Bookings', value: bookingsCount, icon: BookingIcon, color: 'text-[#D4A95D]', bg: 'bg-[#D4A95D]/10' },
@@ -85,10 +117,26 @@ export function AdminDashboard() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-[#F5F3EF]">Dashboard</h1>
-        <p className="text-[#A0A0A0] mt-1">Real-time overview of your business performance.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-[#F5F3EF]">Dashboard</h1>
+          <p className="text-[#A0A0A0] mt-1">Real-time overview of your business performance.</p>
+        </div>
+        <button
+          onClick={() => setShowScanner(true)}
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#D4A95D] text-[#161616] font-bold hover:bg-[#F5F3EF] transition-all shadow-lg shadow-[#D4A95D]/10"
+        >
+          <ExpandIcon size={20} />
+          Scan QR Check-in
+        </button>
       </div>
+
+      {showScanner && (
+        <QRScanner
+          onScan={handleScan}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
