@@ -40,10 +40,12 @@ export async function POST(req: Request) {
     const body = await req.json()
     if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
 
+    // Handle both camelCase and snake_case field names
     const {
       reference,
       type,
       itemId,
+      item_id,
       title,
       name,
       email,
@@ -51,11 +53,19 @@ export async function POST(req: Request) {
       amount,
       status,
       qrText,
+      qr_text,
       payload,
     } = body as any
 
-    if (!reference || !type || !itemId || !title || !name || !email || !phone || !amount || !status || !qrText) {
-      return NextResponse.json({ error: 'Missing required submission fields' }, { status: 400 })
+    // Use snake_case values if available, otherwise use camelCase
+    const finalItemId = item_id ?? itemId ?? ''
+    const finalQrText = qr_text ?? qrText ?? ''
+
+    if (!reference || !type || !finalItemId || !title || !name || !email || !phone || amount === undefined || amount === null || !status || !finalQrText) {
+      return NextResponse.json({ 
+        error: 'Missing required submission fields',
+        received: { reference, type, finalItemId, title, name, email, phone, amount, status, finalQrText }
+      }, { status: 400 })
     }
 
     const id = body.id || genId()
@@ -63,24 +73,28 @@ export async function POST(req: Request) {
       id,
       reference,
       type,
-      item_id: itemId,
+      item_id: finalItemId,
       title,
       name,
       email,
       phone,
       amount,
       status,
-      qr_text: qrText,
+      qr_text: finalQrText,
       payload,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }
 
     const { data, error } = await supabaseAdmin.from('submissions').upsert(record, { onConflict: 'reference' }).select()
-    if (error) return NextResponse.json({ error: 'db_error' }, { status: 500 })
+    if (error) {
+      console.error('submission upsert error:', error)
+      return NextResponse.json({ error: 'db_error', details: error.message }, { status: 500 })
+    }
 
     return NextResponse.json({ submission: data && Array.isArray(data) ? data[0] : record })
   } catch (err) {
-    return NextResponse.json({ error: 'failed' }, { status: 500 })
+    console.error('submission post error:', err)
+    return NextResponse.json({ error: 'failed', details: err instanceof Error ? err.message : 'Unknown error' }, { status: 500 })
   }
 }
