@@ -90,7 +90,7 @@ export default function PaymentCallbackPage() {
           return
         }
 
-        await fetch('/api/submissions', {
+        await fetch('https://lamahhub.vercel.app/api/submissions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ export default function PaymentCallbackPage() {
         {status === 'loading' && (
           <div className="rounded-[28px] border border-[#F59E0B]/20 bg-[#1A1A1A] p-6 text-center">
             <p className="text-[#F59E0B] font-semibold">⚠️ Please wait</p>
-            <p className="mt-2 text-[#A0A0A0]">Your payment is being verified. Do not close this page. After verification, <span className="font-semibold text-[#D4A95D]">download your QR code</span> as it validates your payment for the admin.</p>
+            <p className="mt-2 text-[#A0A0A0]">Your payment is being verified. Do not close this page. After verification, <span className="font-semibold text-[#D4A95D]">download your QR code</span> for check-in.</p>
           </div>
         )}
 
