@@ -28,15 +28,28 @@ const genId = () => {
 export async function GET() {
   try {
     const { data: submissions, error } = await supabaseAdmin.from('submissions').select('*').order('created_at', { ascending: false })
-    if (error) return NextResponse.json({ submissions: [] })
+    if (error) {
+      console.error('GET submissions error:', error)
+      return NextResponse.json({ submissions: [] })
+    }
     return NextResponse.json({ submissions })
   } catch (err) {
+    console.error('GET submissions catch error:', err)
     return NextResponse.json({ submissions: [] })
   }
 }
 
 export async function POST(req: Request) {
   try {
+    // Check if supabaseAdmin is initialized
+    if (!supabaseAdmin) {
+      console.error('Supabase admin client not initialized')
+      return NextResponse.json({ 
+        error: 'Database connection failed', 
+        details: 'Supabase admin client not initialized'
+      }, { status: 500 })
+    }
+
     const body = await req.json()
     if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
 
@@ -86,15 +99,28 @@ export async function POST(req: Request) {
       updated_at: new Date().toISOString(),
     }
 
+    console.log('Attempting to upsert submission:', { reference, type, status })
+
     const { data, error } = await supabaseAdmin.from('submissions').upsert(record, { onConflict: 'reference' }).select()
+    
     if (error) {
       console.error('submission upsert error:', error)
-      return NextResponse.json({ error: 'db_error', details: error.message }, { status: 500 })
+      return NextResponse.json({ 
+        error: 'db_error', 
+        details: error.message,
+        code: error.code
+      }, { status: 500 })
     }
 
+    console.log('Submission upserted successfully:', reference)
     return NextResponse.json({ submission: data && Array.isArray(data) ? data[0] : record })
   } catch (err) {
     console.error('submission post error:', err)
-    return NextResponse.json({ error: 'failed', details: err instanceof Error ? err.message : 'Unknown error' }, { status: 500 })
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    console.error('Error details:', errorMessage)
+    return NextResponse.json({ 
+      error: 'failed', 
+      details: errorMessage
+    }, { status: 500 })
   }
 }
