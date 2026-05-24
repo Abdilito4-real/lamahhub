@@ -15,7 +15,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Paystack secret key is not configured' }, { status: 500 })
   }
 
-  const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/payment/callback`
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lamahhub.vercel.app'
+  const callbackUrl = `${appUrl}/payment/callback`
   const metadata = {
     name,
     phone,
