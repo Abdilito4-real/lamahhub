@@ -63,7 +63,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'failed' }, { status: 500 })
     }
 
-    return NextResponse.json({ ok: true })
+    return NextResponse.json({ 
+      ok: true,
+      redirectUrl: 'https://lamahhub.vercel.app/success'
+    })
   }
 
   return NextResponse.json({ ok: true })
