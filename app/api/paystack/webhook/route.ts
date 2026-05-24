@@ -28,6 +28,12 @@ export async function POST(req: Request) {
     const reference = transaction.reference
     const amountNGN = transaction.amount ? transaction.amount / 100 : 0
 
+
+    const payload = {
+      ...transaction,
+      domain: 'lamahhub.vercel.app',
+    }
+
     const record = {
       reference,
       type: metadata.type ?? 'other',
