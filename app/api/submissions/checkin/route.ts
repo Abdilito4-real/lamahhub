@@ -9,8 +9,13 @@ export async function POST(req: Request) {
   if (!verifyAdminToken(token)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const reference = body?.reference
+  let reference = body?.reference
   if (!reference) return NextResponse.json({ error: 'Reference is required' }, { status: 400 })
+
+  // Handle QR code prefix if present
+  if (reference.startsWith('LAMAHHUB:')) {
+    reference = reference.replace('LAMAHHUB:', '')
+  }
 
   try {
     const update = { checked_in: true, updated_at: new Date().toISOString() }

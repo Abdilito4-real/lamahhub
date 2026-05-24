@@ -1,6 +1,6 @@
 import http from 'http'
 
-const body = JSON.stringify({ reference: 'test' })
+const body = JSON.stringify({ reference: 'LAMAHHUB:test' })
 
 const options = {
   hostname: 'localhost',
