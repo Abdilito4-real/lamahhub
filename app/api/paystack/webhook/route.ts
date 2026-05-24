@@ -65,7 +65,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ 
       ok: true,
-      redirectUrl: 'https://lamahhub.vercel.app/success'
+      redirectUrl: 'https://lamahhub.vercel.app/payment/callback'
     })
   }
 
